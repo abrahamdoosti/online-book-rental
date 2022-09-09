@@ -33,11 +33,11 @@ public class UserController {
 	}
 
 	@GetMapping("/findUser/{id}")
-	public ResponseEntity<User> findUser(@PathVariable("id") final Long id) {
-		Optional<User> user = userService.findById(id);
-		//UserResponseDTO usrDto=modelMapper.map(user.get(),UserResponseDTO.class);
+	public ResponseEntity<UserResponseDTO> findUser(@PathVariable("id") final Long id) {
+		Optional<User> user = userService.findById(id);		
 		if (user.isPresent()) {
-			return new ResponseEntity<>(user.get(), HttpStatus.OK);
+			UserResponseDTO usrDto=modelMapper.map(user.get(),UserResponseDTO.class);
+			return new ResponseEntity<>(usrDto, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
