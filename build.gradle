@@ -9,6 +9,10 @@ group = 'com.example.library'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext.springProfilesActive='dev'
+ext.tomcatPort=8080
+ext.remoteDebugPort=8100
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -33,6 +37,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
+	
+	implementation 'org.modelmapper:modelmapper:3.0.0'
 }
 
 tasks.named('test') {
@@ -43,4 +49,13 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+bootRun{
+    jvmArgs=[           
+           "-Dspring.profiles.active=$springProfilesActive",
+           "-Dserver.port=$tomcatPort",
+           "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$remoteDebugPort"
+            ]
+
 }
